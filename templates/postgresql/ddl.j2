@@ -1,11 +1,15 @@
 {%-for database in databases %}
 {%-for table in database['tables'] %}
-CREATE TABLE {{table.name.lower()}} (
+CREATE TABLE {{table.name}} (
     {%for column in table['columns']-%}
-	{{column.name}} {{column.type}} {%-if column['is_primary'] == True %} PRIMARY KEY {%-endif %}
-    {%-if column['is_required'] == True %}NOT NULL {% else %} NULL {%-endif %}
+    {%-if 'foreign_key' in column and column['foreign_key'] is not none %}FOREIGN KEY ({{column.name}}) 
+        REFERENCES {{column['foreign_key']['reference_entity']}} ({{column['foreign_key']['reference_column']}})
+    {%-else-%}
+    {{column.name}} {{column.type}} {%-if column['is_primary'] == True %} PRIMARY KEY {%-endif %}
+    {%-if column['is_required'] == True %} NOT NULL {% else %} NULL {%-endif%}
+    {%-endif-%}
     {%-if not loop.last-%},{%-endif %}
-    {%endfor%})
+    {%endfor%}
 );
 {% endfor-%}
 {% endfor-%}
