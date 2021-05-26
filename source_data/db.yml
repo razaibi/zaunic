@@ -9,16 +9,26 @@ data:
       service-type: ""
       port: ""
       locale: ""
+      logic:
+      - "clean_table"
       tables:
-      - name: "sample"
+      - name: "Sample"
         columns:
           - name: 'id'
             type: 'int'
             is_primary: True
-            is_requried: True
-            is_unique : False
+            is_required: True
+            is_unique: False
           - name: 'name'
             type: 'nvarchar'
             is_primary: False
-            is_requried: False
-            is_unique : False
+            is_required: False
+            is_unique: False
+          - name: 'team_id'
+            type: 'int'
+            is_primary: False
+            is_required: False
+            is_unique: False
+            foreign_key: 
+              reference_column: "team_id"
+              reference_entity: "Team"
