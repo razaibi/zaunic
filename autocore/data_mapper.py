@@ -8,6 +8,15 @@ datatypes = {
         "java" : "int",
         "javascript" : ""
     },
+    "tinyint" : {
+        "postgresql" : "SMALLINT",
+        "sqlserver" : "TINYINT",
+        "c_sharp" : "byte",
+        "pydantic" : "int",
+        "elixir" : "",
+        "java" : "byte",
+        "javascript" : ""
+    },
     "bigint" : {
         "postgresql" : "BIGINT",
         "sqlserver" : "BIGINT",
@@ -51,6 +60,42 @@ datatypes = {
         "pydantic" : "str",
         "elixir" : "",
         "java" : "String",
+        "javascript" : ""
+    }
+    "float" : {
+        "postgresql" : "DOUBLE PRECISION",
+        "sqlserver" : "FLOAT",
+        "c_sharp" : "float",
+        "pydantic" : "float",
+        "elixir" : "",
+        "java" : "float",
+        "javascript" : ""
+    },
+    "date" : {
+        "postgresql" : "DATE",
+        "sqlserver" : "DATE",
+        "c_sharp" : "DateTime",
+        "pydantic" : "datetime.date",
+        "elixir" : "",
+        "java" : "Date",
+        "javascript" : ""
+    },
+    "time" : {
+        "postgresql" : "TIMESTAMP",
+        "sqlserver" : "DATETIME2",
+        "c_sharp" : "DateTime",
+        "pydantic" : "datetime.date",
+        "elixir" : "",
+        "java" : "Date",
+        "javascript" : ""
+    },
+    "uuid" : {
+        "postgresql" : "CHAR",
+        "sqlserver" : "UNIQUEIDENTIFIER",
+        "c_sharp" : "Guid",
+        "pydantic" : "uuid.UUID",
+        "elixir" : "",
+        "java" : "UUID",
         "javascript" : ""
     }
 }
