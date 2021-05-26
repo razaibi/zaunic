@@ -1,10 +1,16 @@
-import core
+import autocore from core
 
 def run_all():
-    pass
+    #core.process_template(
+    #    "postgresql",
+    #    "ddl",
+    #    "db.yml"
+    #)
+    #core.process_playbook("playbook-1")
+    core.autocode()
 
 def main():
-    pass
+    run_all()
 
 if __name__=='__main__':
     main()
