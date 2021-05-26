@@ -1,7 +1,7 @@
 import os
 import jinja2
 import yaml
-import template_logic
+from template_logic import common
 from progress.bar import ChargingBar
 import CONFIGS
 
@@ -37,17 +37,22 @@ def write_to_file(filename, content):
 def process_template(
         **task
     ):
-    _injector = read_yaml(
+    data_injector = read_yaml(
         os.path.join(
             "source_data",
             "{}.yml".format( task['source_data'])
         )
     )
 
+    data_injector['data'] = common.process_common_logic(
+        task['category'],
+        data_injector['data']
+    )
+
     _rendered_template = read_template(
             task['category'],
             task['template'],
-            _injector['data']
+            data_injector['data']
     )
 
     output_file = os.path.join(
