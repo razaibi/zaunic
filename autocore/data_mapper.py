@@ -53,6 +53,15 @@ datatypes = {
         "java" : "String",
         "javascript" : ""
     },
+    "nvarchar" : {
+        "postgresql" : "VARCHAR",
+        "sqlserver" : "NVARCHAR",
+        "c_sharp" : "string",
+        "pydantic" : "str",
+        "elixir" : "",
+        "java" : "String",
+        "javascript" : ""
+    },
     "text" : {
         "postgresql" : "TEXT",
         "sqlserver" : "VARCHAR",
@@ -61,7 +70,7 @@ datatypes = {
         "elixir" : "",
         "java" : "String",
         "javascript" : ""
-    }
+    },
     "float" : {
         "postgresql" : "DOUBLE PRECISION",
         "sqlserver" : "FLOAT",
