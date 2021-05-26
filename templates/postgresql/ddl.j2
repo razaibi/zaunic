@@ -1,0 +1,25 @@
+from sqlalchemy import (Column, Integer, MetaData, String, Boolean, Table, create_engine, ForeignKey, ARRAY)
+
+from databases import Database
+import api.app_config
+
+DATABASE_URL = {{db_connection}}
+
+engine = create_engine(DATABASE_URL)
+metadata = MetaData()
+
+{%-for table in tables %}
+{{table.name.lower()}}s = Table(
+    '{{table.name.lower()}}',
+    metadata,
+    {%for column in table['columns']-%}
+    Column('{{column.name}}', {{column.type}}
+    {%-if column['is_primary'] == True %}, primary_key=True {%-endif %}
+    {%-if 'default' in column %}, default="{{column.default}}" {%-endif %}
+    {%-if column['is_required'] == True %}, nullable=False {%-endif %}
+    {%-if 'foreign_key' in column and column['foreign_key'] is not none %}, ForeignKey("{{column['foreign_key']}}") {%-endif %})
+    {%-if not loop.last-%},{%-endif %}
+    {% endfor%})
+{% endfor-%}
+
+database = Database(DATABASE_URL)
