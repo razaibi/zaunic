@@ -1,0 +1,2 @@
+# autocode
+Simple code generator.
