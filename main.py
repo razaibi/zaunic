@@ -1,4 +1,4 @@
-import autocore from core
+from autocore import core
 
 def run_all():
     #core.process_template(
