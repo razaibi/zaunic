@@ -2,6 +2,7 @@ import os
 import jinja2
 import yaml
 from template_logic import common
+from autocore import logic_mapper
 from progress.bar import ChargingBar
 import CONFIGS
 
@@ -37,6 +38,7 @@ def write_to_file(filename, content):
 def process_template(
         **task
     ):
+    #Get raw data from "source_data" folder to inject in the template.
     data_injector = read_yaml(
         os.path.join(
             "source_data",
@@ -44,11 +46,16 @@ def process_template(
         )
     )
 
+    #Invoke common logic applicable to all templates.
     data_injector['data'] = common.process_common_logic(
         task['category'],
         data_injector['data']
     )
 
+    #Apply logic specified in the source data file.
+    data_injector['data'] = process_custom_logic(data_injector['data'])
+
+    #Render template by injecting data.
     _rendered_template = read_template(
             task['category'],
             task['template'],
@@ -65,9 +72,14 @@ def process_template(
         _rendered_template
     )
 
+def process_custom_logic(data):
+    for solution in data[CONFIGS.SOLUTIONS_TERM]:
+        if 'logic' in solution:
+            for logic_item in solution['logic']:
+                data = logic_mapper[logic_item](data)
+    return data
 
 def process_playbook(playbook_name):
-    
     playbook_data = read_yaml(
         os.path.join(
             CONFIGS.PLAYBOOKS_FOLDER,
