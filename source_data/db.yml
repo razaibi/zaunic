@@ -9,6 +9,8 @@ data:
       service-type: ""
       port: ""
       locale: ""
+      logic:
+      - "clean_postgresql_columns"
       tables:
       - name: "Sample"
         columns:

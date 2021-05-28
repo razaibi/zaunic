@@ -2,7 +2,7 @@ import os
 import jinja2
 import yaml
 from template_logic import common
-from autocore import logic_mapper
+from autocore.logic_mapper import logic_map
 from progress.bar import ChargingBar
 import CONFIGS
 
@@ -73,10 +73,11 @@ def process_template(
     )
 
 def process_custom_logic(data):
+    #Loop through solutions (databases)
     for solution in data[CONFIGS.SOLUTIONS_TERM]:
         if 'logic' in solution:
             for logic_item in solution['logic']:
-                data = logic_mapper[logic_item](data)
+                data = logic_map[logic_item](data)
     return data
 
 def process_playbook(playbook_name):
