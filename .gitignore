@@ -1,2 +1,5 @@
 __pycache__
 templates/postgresql/sample_file.j2
+TODO.md
+.vscode/settings.json
+output/
