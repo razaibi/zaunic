@@ -1,0 +1,6 @@
+---
+tasks:
+  - source_data: "db"
+    category: "postgresql"
+    template: "ddl"
+    output: "sample.sql"

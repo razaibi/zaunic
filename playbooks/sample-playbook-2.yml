@@ -1,0 +1,6 @@
+---
+tasks:
+  - source_data: "resources"
+    category: "azurecli"
+    template: "sample-resource.create"
+    output: "sample.txt"
