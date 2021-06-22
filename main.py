@@ -1,4 +1,4 @@
-from autocore import core
+from zcore import core
 
 def run_all():
     #core.process_template(

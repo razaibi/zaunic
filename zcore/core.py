@@ -4,7 +4,7 @@ from jinja2 import Template
 import yaml
 import errno
 from template_logic import common
-from autocore.logic_mapper import logic_map
+from zcore.logic_mapper import logic_map
 from progress.bar import ChargingBar
 import CONFIGS
 
@@ -74,7 +74,7 @@ def process_template(
     #Get raw data from "source_data" folder to inject in the template.
     data_injector = read_yaml(
         os.path.join(
-            "source_data",
+            CONFIGS.SOURCE_DATA_FOLDER,
             "{}.yml".format( task['source_data'])
         )
     )

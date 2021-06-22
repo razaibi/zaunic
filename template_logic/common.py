@@ -1,4 +1,4 @@
-from autocore import data_mapper
+from zcore import data_mapper
 import CONFIGS
 
 def process_common_logic(category, data):
