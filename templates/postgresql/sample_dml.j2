@@ -1,0 +1,11 @@
+{%-for database in databases %}
+{%-for table in database['tables'] %}
+
+    {%for column in table['columns']-%}
+    UPDATE TABLE {{table.name}}
+    SET {{column.name}} = {%-if column.type not in ['int','tinyint','bigint'] %} "" {% else %} 0 {%-endif%}
+    WHERE [condition] ;
+    {%endfor%}
+
+{% endfor-%}
+{% endfor-%}

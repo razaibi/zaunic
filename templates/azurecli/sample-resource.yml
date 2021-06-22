@@ -1,0 +1,3 @@
+---
+ create_group: "az group create --name {{ resource_group_name }} --location {{ location }}"
+ update: "az update"
