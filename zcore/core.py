@@ -75,7 +75,12 @@ def process_template(
     data_injector = read_yaml(
         os.path.join(
             CONFIGS.SOURCE_DATA_FOLDER,
-            "{}.yml".format( task['source_data'])
+            "{}.yml".format(
+                task['source_data'].replace(
+                    CONFIGS.DATA_FOLDER_SEPARATOR,
+                    os.sep
+                )
+            )
         )
     )
 
