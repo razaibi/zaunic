@@ -112,7 +112,11 @@ def process_template(
     #Prepare output
     output_file = os.path.join(
         CONFIGS.OUTPUT_FOLDER,
-        '{}'.format(task['output'])
+        '{}'.format(task['output'].replace(
+            CONFIGS.OUTPUT_FOLDER_SEPARATOR,
+            os.sep
+            )
+        )
     )
 
     write_to_file(
