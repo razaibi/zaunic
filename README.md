@@ -53,7 +53,9 @@ CREATE TABLE {{table.name}} (
 
 ### Setup Source Data
 
-For code or configs to be generated, specify the source data that needs to be used. Navigate to the "source_data" folder and setup your yaml file. Source data can be flat or nested. Below is an example from *sample-resource.yml* file from the *source_data* folder.
+For code or configs to be generated, specify the source data that needs to be used. Navigate to the "data" folder and setup your yaml file. Source data can be flat or nested. Below is an example from *sample-resource.yml* file from the *data* folder.
+
+
 
 ### Set Up Playbooks
 
@@ -68,7 +70,25 @@ tasks:
     template: "sample-resource.create_group"
     output: "sample.txt"
 ```
-Here ***source_data*** refers to a yml file that carries data to be injected into the template. ".yml" is not required in the name.
+Here ***data*** refers to a yml file that carries data to be injected into the template. ".yml" is not required in the name.
+
+Data can be set in a couple of ways:
+> Passing the entire yml file as the data (source).
+
+Example:
+
+```
+data: "sample-resource"
+```
+
+> Passing a specific section of the data (source) file by setting the ***data_level***.
+
+Example:
+
+```
+data: "sample-resource"
+data_level: "sample>0"
+```
 
 ***category*** refers to the folder in the templates folder.
 
@@ -78,9 +98,9 @@ Here ***source_data*** refers to a yml file that carries data to be injected int
 
 ### Setup Runners for Playbooks
 
-- Use the "runner" folder to setup the list of playbooks you watn to execute.
+- Use the "runner" folder to setup the list of playbooks you want to execute.
 - Add the name of the playbooks you want to execute.
-- Playbooks specified here are executed in linear fashion.
+- Playbooks specified here are executed in linear order.
 
 Below is an example of the same:
 ```
