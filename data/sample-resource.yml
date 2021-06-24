@@ -1,4 +1,5 @@
 ---
 data:
-  location: south-central-us
-  resource_group_name: sample-group
+  sample:
+    - location: south-central-us
+      resource_group_name: sample-group

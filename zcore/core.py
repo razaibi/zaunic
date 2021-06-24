@@ -71,12 +71,14 @@ def write_to_file(filename, content):
 def process_template(
         **task
     ):
-    #Get raw data from "source_data" folder to inject in the template.
+    """
+    Get raw data from "source_data" folder to inject in the template.
+    """
     data_injector = read_yaml(
         os.path.join(
             CONFIGS.SOURCE_DATA_FOLDER,
             "{}.yml".format(
-                task['source_data'].replace(
+                task['data'].replace(
                     CONFIGS.DATA_FOLDER_SEPARATOR,
                     os.sep
                 )
@@ -84,7 +86,35 @@ def process_template(
         )
     )
 
-    #Invoke common logic applicable to all templates.
+    """
+    Extract data from data levels
+    """
+    if CONFIGS.DATA_LEVEL_KEY in task:
+        task_data_level = task[CONFIGS.DATA_LEVEL_KEY]
+        task_data_level = \
+            task_data_level.replace(" ","")
+        sub_expression = process_data_level(
+            task_data_level
+        )
+
+        """ 
+        Apply sub expression to data.
+        """
+        data_injector[CONFIGS.DATA_KEY] = \
+            eval(
+                "".join(
+                    [
+                        "data_injector['{}']".format(
+                            CONFIGS.DATA_KEY
+                        ),
+                        sub_expression
+                    ]
+                )
+            )
+
+    """
+    Invoke common logic applicable to all templates.
+    """
     data_injector['data'] = common.process_common_logic(
         task['category'],
         data_injector['data']
@@ -102,22 +132,34 @@ def process_template(
         _nested_file = _template_file_parts[0]
         _jinja_template_name = _template_file_parts[1]
         _rendered_template = read_short_template(
-            task['category'],
+            task[
+                CONFIGS.CATEGORY_KEY
+            ],
             _nested_file,
             _jinja_template_name,
-            data_injector['data']
+            data_injector[
+                CONFIGS.DATA_KEY
+            ]
         )
     else:
         _rendered_template = read_template(
-                task['category'],
-                 task['template'],
-                data_injector['data']
+                task[
+                    CONFIGS.CATEGORY_KEY
+                ],
+                 task[
+                    CONFIGS.TEMPLATE_KEY
+                 ],
+                data_injector[
+                    CONFIGS.DATA_KEY
+                ]
         )
 
     #Prepare output
     output_file = os.path.join(
         CONFIGS.OUTPUT_FOLDER,
-        '{}'.format(task['output'].replace(
+        '{}'.format(task[
+            CONFIGS.OUTPUT_KEY   
+        ].replace(
             CONFIGS.OUTPUT_FOLDER_SEPARATOR,
             os.sep
             )
@@ -136,6 +178,27 @@ def process_template(
 #            for logic_item in solution['logic']:
 #                data = logic_map[logic_item](data)
 #    return data
+
+def fix_type(item):
+    """
+    Assign type as int or string to item.
+    Quick hack.
+    TODO: Refactor
+    """
+    try:
+        int(item)
+        return "[" + str(item) + "]"
+    except:
+        return "['" + str(item) + "']"
+
+def process_data_level(level_expression):
+    levels = level_expression.split(
+        CONFIGS.DATA_LEVEL_SEPARATOR
+    )
+    level_list = list(map(fix_type, levels))
+    refined_expression = "".join(level_list)
+    return refined_expression
+    
 
 def process_playbook(playbook_name):
     playbook_data = read_yaml(
