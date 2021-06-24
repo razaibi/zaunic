@@ -1,6 +1,5 @@
 ---
 tasks:
-  - data: "sample-resource"
-    category: "azurecli"
+  - category: "azurecli"
     template: "sample-resource>create_group"
     output: "something>sample.txt"
