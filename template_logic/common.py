@@ -1,15 +1,15 @@
 from zcore import data_mapper
 import CONFIGS
 
-def process_common_logic(task, data_injector):
-    if CONFIGS.DATA_KEY in task:
+def process_common_logic(task: dict, data_injector: dict) -> dict:
+    if CONFIGS.DATA_KEY in data_injector:
         data = process_datatype_logic(
             task[CONFIGS.CATEGORY_KEY], 
             data_injector[CONFIGS.DATA_KEY]
         )
+        return data
     else:
-        data = data_injector[CONFIGS.DATA_KEY]
-    return data
+        return data_injector[CONFIGS.DATA_KEY]
 
 
 def process_datatype_logic(category, data):

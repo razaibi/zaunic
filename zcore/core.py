@@ -85,8 +85,8 @@ def process_template(
     """
     ##To be Fixed
     ##data_injector['data'] = common.process_common_logic(
-    ##    task['category'],
-    ##    data_injector['data']
+    ##    task,
+    ##    data_injector
     ##)
 
     #Apply logic specified in the source data file.
