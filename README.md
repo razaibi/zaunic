@@ -1,5 +1,5 @@
 # Zaunic
-Configurable, easy-to-use code generator.
+Configurable, platform/output agnostic, easy-to-use code generator.
 
 
 ## Quick Start Guide
