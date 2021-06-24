@@ -2,3 +2,4 @@
 playbooks:
   - "sample-playbook-2"
   - "sample-playbook-3"
+  - "sample-playbook-4"
