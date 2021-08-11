@@ -125,3 +125,8 @@ If your environment, exclusively uses *python3*, execute using this:
 ```
 python3 main.py.
 ```
+
+## Coming Soon...
+
+- Support for Secrets
+- Remote access
