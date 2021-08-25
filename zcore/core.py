@@ -1,4 +1,5 @@
 import os
+from posixpath import expanduser
 import jinja2
 from jinja2 import Template
 import yaml
@@ -6,6 +7,7 @@ import errno
 from template_logic import common
 from zcore.logic_mapper import logic_map
 from progress.bar import ChargingBar
+from pathlib import Path
 import CONFIGS
 
 
@@ -52,21 +54,25 @@ def read_yaml(file_path):
         documents = yaml.load(file, Loader=yaml.FullLoader)
     return documents
 
-def write_to_file(filename, content):
-    file_path = filename
-    if not os.path.exists(os.path.dirname(file_path)):
+def write_to_file(file_path, content):
+    folder_path = os.path.dirname(file_path)
+    if not os.path.exists(os.path.expanduser(folder_path)):
         try:
-            os.makedirs(os.path.dirname(file_path))
+            os.makedirs(os.path.expanduser(folder_path))
         except OSError as exc:
             if exc.errno != errno.EEXIST:
                 raise
-        with open(file_path, "w+") as f:
-            f.write(content)
+    expanded_path=None
+    if folder_path.startswith("~"):
+        expanded_path = os.path.expanduser(file_path)
     else:
-        with open(file_path, "a") as f:
-            f.write(content)
+        expanded_path = os.path.join(
+            os.getcwd(),
+            file_path
+        )
+    with open(expanded_path, "w+") as f:
+        f.write(content)
         
-
 
 def process_template(
         **task
@@ -98,8 +104,7 @@ def process_template(
     _rendered_template = render_template(task, data_injector)
 
     #Prepare output
-    output_file = os.path.join(
-        CONFIGS.OUTPUT_FOLDER,
+    output_path = os.path.join(
         '{}'.format(task[
             CONFIGS.OUTPUT_KEY   
         ].replace(
@@ -108,9 +113,9 @@ def process_template(
             )
         )
     )
-
+    
     write_to_file(
-        output_file,
+        output_path,
         _rendered_template
     )
 
@@ -121,6 +126,10 @@ def process_template(
 #            for logic_item in solution['logic']:
 #                data = logic_map[logic_item](data)
 #    return data
+
+def build_output_file():
+    pass
+    
 
 def render_template(task, data_injector):
     """
