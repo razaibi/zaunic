@@ -3,4 +3,4 @@ tasks:
   - data: "sample-resource"
     category: "azurecli"
     template: "sample-resource>create_group"
-    output: "something>sample.txt"
+    output: "~>new>sample.txt"
