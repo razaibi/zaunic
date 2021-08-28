@@ -27,6 +27,7 @@ OUTPUT_KEY = 'output'
 # Playbook Configs
 
 PLAYBOOKS_FOLDER="playbooks"
+# Used to format Folder<SEPARATOR>File
 NESTED_TEMPLATE_SEPARATOR = ">"
 OUTPUT_FOLDER_SEPARATOR = ">"
 ## Do not use period (.) for OUTPUT_FOLDER_SEPARATOR

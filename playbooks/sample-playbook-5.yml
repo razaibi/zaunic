@@ -1,0 +1,8 @@
+---
+nodes: test-nodes
+tasks:
+  - name: "List files."
+    category: "bash"
+    template: "listing>list_files"
+    output: "~>something>sample-5.sh"
+    nodes: test-nodes

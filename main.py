@@ -7,7 +7,7 @@ def run_all():
     #    "db.yml"
     #)
     #core.process_playbook("playbook-1")
-    core.autocode()
+    core.run()
 
 def main():
     run_all()

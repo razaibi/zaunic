@@ -1,5 +1,3 @@
 ---
 playbooks:
-  - "sample-playbook-2"
-  - "sample-playbook-3"
-  - "sample-playbook-4"
+  - "sample-playbook-5"

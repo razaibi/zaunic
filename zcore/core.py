@@ -5,9 +5,12 @@ from jinja2 import Template
 import yaml
 import errno
 from template_logic import common
+from zcore.common import FileManager
 from zcore.logic_mapper import logic_map
+from zcore.node import Manager as NodeManager
 from progress.bar import ChargingBar
 from pathlib import Path
+import paramiko
 import CONFIGS
 
 
@@ -72,9 +75,34 @@ def write_to_file(file_path, content):
         )
     with open(expanded_path, "w+") as f:
         f.write(content)
-        
 
-def process_template(
+def write_to_remote_file(
+        node_client,
+        ftp_client,
+        file_path, 
+        content
+    ):
+    folder_path = os.path.dirname(file_path)        
+    # Create temp folder.
+    temp_folder = str(os.path.join(os.sep, "tmp","zaunic"))
+    node_client.exec_command("sudo mkdir -p {0}".format(temp_folder))
+    clean_file_path = file_path.replace(folder_path,'').replace(os.sep,'')
+    #Upload to tmp folder
+    file = ftp_client.file(os.path.join(temp_folder,clean_file_path), "w", -1)
+    file.write(content)
+    file.flush()
+    # Move to designated folder
+    node_client.exec_command("sudo mkdir -p {0}".format(folder_path))
+    node_client.exec_command(
+            "sudo mv {0}{1}* {2}{3}".format(
+            temp_folder, 
+            os.sep,
+            folder_path, 
+            os.sep
+        )
+    )
+
+def process_task(
         **task
     ):
     """
@@ -127,10 +155,23 @@ def process_template(
 #                data = logic_map[logic_item](data)
 #    return data
 
+def generate_task_code(
+        **task
+    ):
+    """
+    Get raw data from "source_data" folder to inject in the template.
+    """
+    data_injector = get_data_injector(task)
+
+    data_injector = apply_data_sub_expression(
+        task, data_injector
+    )    
+    _rendered_template = render_template(task, data_injector)
+    return _rendered_template
+
 def build_output_file():
     pass
     
-
 def render_template(task, data_injector):
     """
     Render template by injecting data.
@@ -238,7 +279,19 @@ def process_data_level(level_expression):
     level_list = list(map(fix_type, levels))
     refined_expression = "".join(level_list)
     return refined_expression
-    
+
+def get_output_path(task):
+    ##Prepare output path
+    output_file_path = os.path.join(
+        '{}'.format(task[
+            CONFIGS.OUTPUT_KEY   
+        ].replace(
+            CONFIGS.OUTPUT_FOLDER_SEPARATOR,
+            os.sep
+            )
+        )
+    )
+    return output_file_path
 
 def process_playbook(playbook_name):
     playbook_data = read_yaml(
@@ -247,18 +300,39 @@ def process_playbook(playbook_name):
             '{}.yml'.format(playbook_name)
         )
     )
-    bar = ChargingBar(
-        'Processing {}'.format(playbook_name), 
-        max=len(playbook_data)
-    )
-    for task in playbook_data['tasks']:
-        process_template(
-            **task
-        )
-        bar.next()
-    bar.finish()
 
-def autocode():
+    node_manager = NodeManager()
+    node_list = node_manager.read_node_list(
+        playbook_data['nodes']
+    )
+
+    for node in node_list:
+        node_connection = node_manager.connect_node_with_creds(
+            node['hostname'],
+            node['username'],
+            node['password']
+        )
+        if node_connection['state']=="ok":
+            node_client = node_connection["client"]
+            ftp_client = node_client.open_sftp()
+            bar = ChargingBar(
+                'Processing {} on {}'.format(playbook_name, node["name"]), 
+                max=len(playbook_data['tasks'])
+            )
+            for task in playbook_data['tasks']:
+                task_template = generate_task_code(**task)
+                write_to_remote_file(
+                    node_client,
+                    ftp_client,
+                    get_output_path(task),
+                    task_template
+                )
+                bar.next()
+            ftp_client.close()
+            node_client.close()
+            bar.finish()
+
+def run():
     playbook_list = read_yaml(
         os.path.join(
             CONFIGS.RUNNER_FOLDER,
@@ -267,5 +341,3 @@ def autocode():
     )
     for playbook in playbook_list['playbooks']:
         process_playbook(playbook)
-
-
