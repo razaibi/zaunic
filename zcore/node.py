@@ -33,7 +33,6 @@ class Manager():
                 "client" : ssh_client
             }
         except Exception as e:  
-            print(e)
             return { 
                 "state" : "error",
                 "message" : str(e)
