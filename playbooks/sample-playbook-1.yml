@@ -3,4 +3,4 @@ tasks:
   - source_data: "db"
     category: "postgresql"
     template: "ddl"
-    output: "output>sample.sql"
+    output: "~>sample.sql"
