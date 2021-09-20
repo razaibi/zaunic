@@ -19,6 +19,7 @@ ATTRIBUTES_TERM = 'columns'
 # Playbook Keys
 
 DATA_KEY = 'data'
+SECRETS_KEY = 'secrets'
 DATA_LEVEL_KEY = 'data_level'
 CATEGORY_KEY = 'category'
 TEMPLATE_KEY = 'template'
@@ -33,3 +34,7 @@ OUTPUT_FOLDER_SEPARATOR = ">"
 ## Do not use period (.) for OUTPUT_FOLDER_SEPARATOR
 DATA_FOLDER_SEPARATOR=">"
 DATA_LEVEL_SEPARATOR=">"
+
+# Secrets Configs
+SECRETS_STORE_FOLDER = "secretstore"
+SECRETS_CONFIGS_FOLDER = "secret_configs"

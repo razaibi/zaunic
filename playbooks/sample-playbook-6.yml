@@ -1,0 +1,13 @@
+---
+nodes: test-nodes
+secrets:
+  test-secret:
+    keyname: "client_id"
+    env: "dev"
+    source: "zaunic_local"
+tasks:
+  - name: "Impute Secret"
+    category: "bash"
+    template: "print>secret"
+    output: "~>something>secrets_demo.sh"
+    
