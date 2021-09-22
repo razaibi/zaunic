@@ -80,27 +80,37 @@ class PlaybookProcessorService(ProcessorService):
 
     @staticmethod
     def perform_action(node, node_processor_service, playbook_name, playbook_data):
-        node_connection = node_processor_service.connect_node_with_creds(
-            node['hostname'],
-            node['username'],
-            node['password']
-        )
-        if node_connection['state']=="ok":
-            node_client = node_connection["client"]
-            ftp_client = node_client.open_sftp()
+        if node['hostname'] in CONFIGS.LOCAL_NODE_TAGS:
+            #Do something on local node
             bar = ChargingBar(
                 'Processing {} on {}'.format(playbook_name, node["name"]), 
                 max=len(playbook_data['tasks'])
             )
-
-            ## For Generation tasks, invoke generator service.
-            [PlaybookProcessorService.generate_content(task, playbook_data['secrets'], node_client, ftp_client) for task in playbook_data['tasks']]
-
-            #    bar.next()
-            ftp_client.close()
-            node_client.close()
+            [PlaybookProcessorService.generate_content_local(task, playbook_data['secrets']) for task in playbook_data['tasks']]
             bar.finish()
-        return node_connection
+        else:
+
+            node_connection = node_processor_service.connect_node_with_creds(
+                node['hostname'],
+                node['username'],
+                node['password']
+            )
+            if node_connection['state']=="ok":
+                node_client = node_connection["client"]
+                ftp_client = node_client.open_sftp()
+                bar = ChargingBar(
+                    'Processing {} on {}'.format(playbook_name, node["name"]), 
+                    max=len(playbook_data['tasks'])
+                )
+
+                ## For Generation tasks, invoke generator service.
+                [PlaybookProcessorService.generate_content(task, playbook_data['secrets'], node_client, ftp_client) for task in playbook_data['tasks']]
+
+                #    bar.next()
+                ftp_client.close()
+                node_client.close()
+                bar.finish()
+            return node_connection
 
     @staticmethod
     def generate_content(task, secrets, node_client, ftp_client):
@@ -113,6 +123,19 @@ class PlaybookProcessorService(ProcessorService):
         NodeProcessorService.write_to_remote_file(
             node_client,
             ftp_client,
+            task_output_path,
+            task_template
+        )
+
+    @staticmethod
+    def generate_content_local(task, secrets):
+        if 'secrets' not in task:
+            task['secrets'] = {}
+        task['secrets'] = secrets
+        task_template = GeneratorActionService.generate_task_code(**task)
+        task_output_path = PlaybookProcessorService.get_output_path(task)
+        #node
+        NodeProcessorService.write_to_local_file(
             task_output_path,
             task_template
         )

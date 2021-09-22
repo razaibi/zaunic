@@ -4,6 +4,4 @@ TODO.md
 .vscode/settings.json
 output/
 nodes/test-nodes.yml
-secret_configs/*
-secretstore/*
 runner/running_list.yml
