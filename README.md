@@ -1,6 +1,7 @@
 # Zaunic
 Configurable, easy-to-use accelerator.
 
+![alt text](https://github.com/razaibi/zaunic/raw/main/project_assets/zaunic_logo_color.png)
 
 ## Quick Start Guide
 
