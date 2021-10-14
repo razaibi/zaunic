@@ -5,3 +5,5 @@ TODO.md
 output/
 nodes/test-nodes.yml
 runner/running_list.yml
+secretstore/*
+secretstore/dev.ini
