@@ -45,7 +45,7 @@ class NodeProcessorService(ProcessorService):
                 "state" : "ok",
                 "client" : ssh_client
             }
-        except Exception as e:  
+        except Exception as e:
             return { 
                 "state" : "error",
                 "message" : str(e)
@@ -66,7 +66,7 @@ class NodeProcessorService(ProcessorService):
             file_path, 
             content
         ):
-        folder_path = os.path.dirname(file_path)        
+        folder_path = os.path.dirname(file_path)
         # Create temp folder.
         temp_folder = str(os.path.join(os.sep, "tmp","zaunic"))
         node_client.exec_command("sudo mkdir -p {0}".format(temp_folder))

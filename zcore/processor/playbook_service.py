@@ -3,7 +3,7 @@ from pathlib import Path
 from zcore.common import FileManager
 import CONFIGS
 from zcore.processor.node_service import NodeProcessorService
-from zcore.secret.manager import Factory as SecretsFactory
+from zcore.secret.orchestrator_service import OrchestratorService
 from zcore.processor.service import ProcessorService
 from zcore.action.generator_service import GeneratorActionService
 from progress.bar import ChargingBar
@@ -52,10 +52,10 @@ class PlaybookProcessorService(ProcessorService):
             )
         )
 
-
     def impute_secrets(self, playbook_data)->dict:
-        secrets_service = SecretsFactory("zaunic")
-        playbook_data = secrets_service.impute_secrets(playbook_data)
+        if CONFIGS.SECRETS_KEY in playbook_data:
+            secrets_service = OrchestratorService()
+            playbook_data = secrets_service.impute_secrets(playbook_data)
         return playbook_data
 
     def process_playbook(self, playbook_name):
@@ -80,6 +80,8 @@ class PlaybookProcessorService(ProcessorService):
 
     @staticmethod
     def perform_action(node, node_processor_service, playbook_name, playbook_data):
+        #Plug Secrets into 
+        playbook_data = PlaybookProcessorService.validate_playbook_struct(playbook_data)
         node_connection = node_processor_service.connect_node_with_creds(
             node['hostname'],
             node['username'],
@@ -92,18 +94,52 @@ class PlaybookProcessorService(ProcessorService):
                 'Processing {} on {}'.format(playbook_name, node["name"]), 
                 max=len(playbook_data['tasks'])
             )
-
             ## For Generation tasks, invoke generator service.
-            [PlaybookProcessorService.generate_content(task, playbook_data['secrets'], node_client, ftp_client) for task in playbook_data['tasks']]
-
+            [PlaybookProcessorService.generate_content_remote(task, playbook_data['secrets'], node_client, ftp_client) for task in playbook_data['tasks']]
+#
             #    bar.next()
             ftp_client.close()
             node_client.close()
             bar.finish()
         return node_connection
 
+
+
+
+
+
+
+        #if node['hostname'] in CONFIGS.LOCAL_NODE_TAGS:
+        #    bar = ChargingBar(
+        #        'Processing {} on {}'.format(playbook_name, node["name"]), 
+        #        max=len(playbook_data['tasks'])
+        #    )
+        #    [PlaybookProcessorService.generate_content_local(task, playbook_data['secrets']) for task in playbook_data['tasks']]
+        #    bar.finish()
+        #else:
+        #    node_connection = node_processor_service.connect_node_with_creds(
+        #        node['hostname'],
+        #        node['username'],
+        #        node['password']
+        #    )
+        #    if node_connection['state']=="ok":
+        #        node_client = node_connection["client"]
+        #        ftp_client = node_client.open_sftp()
+        #        bar = ChargingBar(
+        #            'Processing {} on {}'.format(playbook_name, node["name"]), 
+        #            max=len(playbook_data['tasks'])
+        #        )
+        #        ## For Generation tasks, invoke generator service.
+        #        [PlaybookProcessorService.generate_content_remote(task, playbook_data['secrets'], node_client, ftp_client) for task in playbook_data['tasks']]
+#
+        #        #    bar.next()
+        #        ftp_client.close()
+        #        node_client.close()
+        #        bar.finish()
+        #    return node_connection
+
     @staticmethod
-    def generate_content(task, secrets, node_client, ftp_client):
+    def generate_content_remote(task, secrets, node_client, ftp_client):
         if 'secrets' not in task:
             task['secrets'] = {}
         task['secrets'] = secrets
@@ -116,6 +152,28 @@ class PlaybookProcessorService(ProcessorService):
             task_output_path,
             task_template
         )
+
+    @staticmethod
+    def generate_content_local(task, secrets):
+        if 'secrets' not in task:
+            task['secrets'] = {}
+        task['secrets'] = secrets
+        task_template = GeneratorActionService.generate_task_code(**task)
+        task_output_path = PlaybookProcessorService.get_output_path(task)
+        #node
+        NodeProcessorService.write_to_local_file(
+            task_output_path,
+            task_template
+        )
+
+    @staticmethod
+    def validate_playbook_struct(playbook_data):
+        if CONFIGS.SECRETS_KEY not in playbook_data:
+            playbook_data['secrets'] = None
+        return playbook_data
+
+
+
 
 
 

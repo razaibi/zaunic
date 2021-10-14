@@ -7,7 +7,6 @@ class SecretsService(ABC):
     @abstractmethod
     def get_secret(env: str, item_key: str): pass
 
-
 class SecretsServiceBuilder:
     def __init__(self, secrets_service: SecretsService) -> None:
         self.secrets_service = secrets_service

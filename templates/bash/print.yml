@@ -1,2 +1,2 @@
 ---
- secret: "echo {{secrets.client_id}}"
+ secret: "echo {{secrets.something}}"

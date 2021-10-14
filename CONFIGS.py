@@ -16,6 +16,9 @@ SOLUTIONS_TERM = 'databases'
 ENTITIES_TERM = 'tables'
 ATTRIBUTES_TERM = 'columns'
 
+# Node Configs
+LOCAL_NODE_TAGS = ['localhost', '127.0.0.1', 'mycomputer']
+
 # Playbook Keys
 
 DATA_KEY = 'data'
