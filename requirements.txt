@@ -8,3 +8,4 @@ typer==0.4.0
 requests==2.26.0
 azure-identity==1.6.1
 azure-keyvault-secrets==4.3.0
+Jinja2==3.0.2
