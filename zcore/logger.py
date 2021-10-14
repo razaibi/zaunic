@@ -2,7 +2,7 @@ import logging
 from colorama import init, Fore, Back, Style
 init(autoreset=True)
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 
 class LogMachine():
     def __init__(self):
