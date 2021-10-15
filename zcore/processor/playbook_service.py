@@ -6,6 +6,7 @@ from zcore.processor.node_service import NodeProcessorService
 from zcore.secret.orchestrator_service import OrchestratorService
 from zcore.processor.service import ProcessorService
 from zcore.action.generator_service import GeneratorActionService
+from zcore.action.executor_service import ExecutorActionService
 from progress.bar import ChargingBar
 
 class PlaybookProcessorService(ProcessorService):
@@ -70,7 +71,7 @@ class PlaybookProcessorService(ProcessorService):
            'generate' : PlaybookProcessorService.call_generate_action, 
            'copy' : PlaybookProcessorService.call_generate_action, 
            'call_api' : PlaybookProcessorService.call_generate_action, 
-           'execute' : PlaybookProcessorService.call_generate_action
+           'execute' : PlaybookProcessorService.call_execute_action
         }
         action[params_dict['task']['action']](**params_dict)
 
@@ -153,6 +154,13 @@ class PlaybookProcessorService(ProcessorService):
             node_client, 
             ftp_client,
             node_processor_service
+        )
+
+    @staticmethod
+    def call_execute_action(task, playbook_data, node_client, ftp_client, node_processor_service):
+        ExecutorActionService.execute_command(
+            task,
+            node_client
         )
 
 
