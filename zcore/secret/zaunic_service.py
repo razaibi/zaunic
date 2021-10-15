@@ -43,10 +43,12 @@ class ZaunicSecretsService(SecretsService):
                 secret_list,
                 secret_name
             )
-            f = Fernet(
-                bytes(encryption_key, "utf-8")
-            )
-            print(secret)
+            if secret is not None:
+                f = Fernet(
+                    bytes(encryption_key, "utf-8")
+                )
+            else:
+                self.log.log_error(f'Value for secret {secret_name} not found.')
         else:
             self.log.log_error(
                 f'Secret Retrieval Failed : Global encryption key for "{env}" environment has not been set.'
