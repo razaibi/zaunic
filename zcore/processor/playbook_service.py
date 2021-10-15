@@ -6,6 +6,7 @@ from zcore.processor.node_service import NodeProcessorService
 from zcore.secret.orchestrator_service import OrchestratorService
 from zcore.processor.service import ProcessorService
 from zcore.action.generator_service import GeneratorActionService
+from zcore.action.executor_service import ExecutorActionService
 from progress.bar import ChargingBar
 
 class PlaybookProcessorService(ProcessorService):
@@ -28,26 +29,12 @@ class PlaybookProcessorService(ProcessorService):
         ):
         pass
 
-    @staticmethod
-    def get_output_path(task):
-        ##Prepare output path
-        output_file_path = os.path.join(
-            '{}'.format(task[
-                CONFIGS.OUTPUT_KEY   
-            ].replace(
-                CONFIGS.OUTPUT_FOLDER_SEPARATOR,
-                os.sep
-                )
-            )
-        )
-        return output_file_path
 
-    
     def get_playbook_data(self,playbook_name)->dict:
         fm = FileManager()
         playbook_data = fm.read_yaml(
             os.path.join(
-                CONFIGS.PLAYBOOKS_FOLDER,
+                CONFIGS.TASK,
                 '{}.yml'.format(playbook_name)
             )
         )
@@ -63,7 +50,7 @@ class PlaybookProcessorService(ProcessorService):
         fm = FileManager()
         playbook_data = fm.read_yaml(
             os.path.join(
-                CONFIGS.PLAYBOOKS_FOLDER,
+                CONFIGS.TASKFLOWS_FOLDER,
                 '{}.yml'.format(playbook_name)
             )
         )
@@ -77,6 +64,16 @@ class PlaybookProcessorService(ProcessorService):
 
         #for node in node_list:
         #    #node
+
+    @staticmethod
+    def action_switcher(params_dict) -> None:
+        action = {
+           'generate' : PlaybookProcessorService.call_generate_action, 
+           'copy' : PlaybookProcessorService.call_generate_action, 
+           'call_api' : PlaybookProcessorService.call_generate_action, 
+           'execute' : PlaybookProcessorService.call_execute_action
+        }
+        action[params_dict['task']['action']](**params_dict)
 
     @staticmethod
     def perform_action(node, node_processor_service, playbook_name, playbook_data):
@@ -95,18 +92,23 @@ class PlaybookProcessorService(ProcessorService):
                 max=len(playbook_data['tasks'])
             )
             ## For Generation tasks, invoke generator service.
-            [PlaybookProcessorService.generate_content_remote(task, playbook_data['secrets'], node_client, ftp_client) for task in playbook_data['tasks']]
-#
+
+            for task in playbook_data['tasks']:
+                PlaybookProcessorService.action_switcher(
+                    {
+                        "task": task,
+                        "playbook_data": playbook_data,
+                        "node_client": node_client,
+                        "ftp_client": ftp_client,
+                        "node_processor_service": NodeProcessorService 
+                    }
+                )
+
             #    bar.next()
             ftp_client.close()
             node_client.close()
             bar.finish()
         return node_connection
-
-
-
-
-
 
 
         #if node['hostname'] in CONFIGS.LOCAL_NODE_TAGS:
@@ -139,38 +141,28 @@ class PlaybookProcessorService(ProcessorService):
         #    return node_connection
 
     @staticmethod
-    def generate_content_remote(task, secrets, node_client, ftp_client):
-        if 'secrets' not in task:
-            task['secrets'] = {}
-        task['secrets'] = secrets
-        task_template = GeneratorActionService.generate_task_code(**task)
-        task_output_path = PlaybookProcessorService.get_output_path(task)
-        #node
-        NodeProcessorService.write_to_remote_file(
-            node_client,
-            ftp_client,
-            task_output_path,
-            task_template
-        )
-
-    @staticmethod
-    def generate_content_local(task, secrets):
-        if 'secrets' not in task:
-            task['secrets'] = {}
-        task['secrets'] = secrets
-        task_template = GeneratorActionService.generate_task_code(**task)
-        task_output_path = PlaybookProcessorService.get_output_path(task)
-        #node
-        NodeProcessorService.write_to_local_file(
-            task_output_path,
-            task_template
-        )
-
-    @staticmethod
     def validate_playbook_struct(playbook_data):
         if CONFIGS.SECRETS_KEY not in playbook_data:
             playbook_data['secrets'] = None
         return playbook_data
+
+    @staticmethod
+    def call_generate_action(task, playbook_data, node_client, ftp_client, node_processor_service):
+        GeneratorActionService.generate_content_remote(
+            task, 
+            playbook_data['secrets'], 
+            node_client, 
+            ftp_client,
+            node_processor_service
+        )
+
+    @staticmethod
+    def call_execute_action(task, playbook_data, node_client, ftp_client, node_processor_service):
+        ExecutorActionService.execute_command(
+            task,
+            node_client
+        )
+
 
 
 

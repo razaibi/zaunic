@@ -8,6 +8,7 @@ secrets:
     instance: "kv-zaunic-test"
 tasks:
   - name: "Impute Secret"
+    action: "generate"
     category: "bash"
     template: "print>secret"
     output: "/>something>secrets_demo.sh"

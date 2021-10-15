@@ -1,7 +1,8 @@
 ---
 tasks:
-  - data: "sample-resource"
+  - category: "azurecli"
+    action: "generate"
+    data: "sample-resource"
     data_level: "sample>0"
-    category: "azurecli"
     template: "sample-resource>create_group"
     output: "~>something>sample-data-levels.txt"

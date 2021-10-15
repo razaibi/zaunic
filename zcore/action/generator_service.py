@@ -12,8 +12,46 @@ class GeneratorActionService(ActionService):
         self.log = logger.LogMachine()
 
     @staticmethod
-    def generate_content():
-        pass
+    def generate_content_remote(task, secrets, node_client, ftp_client, NodeProcessorInstance):
+        if 'secrets' not in task:
+            task['secrets'] = {}
+        task['secrets'] = secrets
+        task_template = GeneratorActionService.generate_task_code(**task)
+        task_output_path = GeneratorActionService.get_output_path(task)
+        #node
+        NodeProcessorInstance.write_to_remote_file(
+            node_client,
+            ftp_client,
+            task_output_path,
+            task_template
+        )
+
+    @staticmethod
+    def generate_content_local(task, secrets, NodeProcessorInstance):
+        if 'secrets' not in task:
+            task['secrets'] = {}
+        task['secrets'] = secrets
+        task_template = GeneratorActionService.generate_task_code(**task)
+        task_output_path = GeneratorActionService.get_output_path(task)
+        #node
+        NodeProcessorInstance.write_to_local_file(
+            task_output_path,
+            task_template
+        )
+
+    @staticmethod
+    def get_output_path(task):
+        ##Prepare output path
+        output_file_path = os.path.join(
+            '{}'.format(task[
+                CONFIGS.OUTPUT_KEY   
+            ].replace(
+                CONFIGS.OUTPUT_FOLDER_SEPARATOR,
+                os.sep
+                )
+            )
+        )
+        return output_file_path
 
     @staticmethod
     def generate_task_code(

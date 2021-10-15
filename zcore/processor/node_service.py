@@ -87,6 +87,13 @@ class NodeProcessorService(ProcessorService):
         )
 
     @staticmethod
+    def execute_remote_file(
+            node_client,
+            command
+        ):
+        node_client.exec_command("{0}".format(command))
+
+    @staticmethod
     def write_to_local_file(file_path, content):
         folder_path = os.path.dirname(file_path)
         if not os.path.exists(os.path.expanduser(folder_path)):
