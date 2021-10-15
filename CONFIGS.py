@@ -30,7 +30,7 @@ OUTPUT_KEY = 'output'
 
 # Playbook Configs
 
-PLAYBOOKS_FOLDER="playbooks"
+TASKFLOWS_FOLDER="taskflows"
 # Used to format Folder<SEPARATOR>File
 NESTED_TEMPLATE_SEPARATOR = ">"
 OUTPUT_FOLDER_SEPARATOR = ">"
