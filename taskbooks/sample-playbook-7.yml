@@ -2,12 +2,12 @@
 nodes: test-nodes
 secrets:
   test-secret:
-    keyname: "clientid"
+    keyname: "client_id"
     env: "dev"
-    source: "azure"
-    instance: "kv-zaunic-test"
+    source: "zaunic_local"
 tasks:
   - name: "Impute Secret"
+    action: "generate"
     category: "bash"
     template: "print>secret"
     output: "/>something>secrets_demo.sh"
