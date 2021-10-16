@@ -115,16 +115,27 @@ playbooks:
 
 > VOILA!
 
-Execute the project using:
+Setup Project for execution (assuming Mac, Ubuntu or WSL):
 
 ```
-python main.py
+. ./cli_setup.sh
 ```
 
-If your environment, exclusively uses *python3*, execute using this:
+Execute the project:
 
 ```
-python3 main.py.
+zn run-all
+```
+
+If your environment uses *python3* to invoke python, change the cli_setup.sh like below:
+
+```
+alias zn='python3 main.py'
+```
+
+To view all available commands, type:
+```
+zn --help
 ```
 
 ## Coming Soon...
