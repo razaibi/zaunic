@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/bash -i
 homedir=~
-eval homedir=$homedir
-alias zn="python3 main.py"
+homedir=$homedir
+alias zn='python3 main.py'
 alias zrc='source ~/.zshrc'
-$zrc
-$zn
+
+

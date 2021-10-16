@@ -6,12 +6,18 @@ secrets:
     env: "dev"
     source: "zaunic_local"
 tasks:
-  - name: "Impute Secret"
+  - name: "Show generation example."
     action: "generate"
     category: "bash"
     template: "print>secret"
     output: "/>something>secrets_demo.sh"
-  - name: "Run file"
+    
+  - name: "Run fil on Dev Server"
     action: "execute"
     command: "curl https://example.org/ >> /something/example.txt"
+
+  - name: "Upload File to Dev Server"
+    action: "upload"
+    source: "./upload_bay/transfer_file_sample.txt"
+    destination: "/something/transfer_file_sample.txt"
     

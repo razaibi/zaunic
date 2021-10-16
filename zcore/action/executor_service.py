@@ -12,7 +12,7 @@ class ExecutorActionService(ActionService):
         self.log = logger.LogMachine()
 
     @staticmethod
-    def execute_command(task, node_client):
-        node_client.exec_command(
-            "{0}".format(task['command'])
+    def execute_command(params_dict):
+        params_dict['node_client'].exec_command(
+            "{0}".format(params_dict['task']['command'])
         )
