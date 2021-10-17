@@ -58,9 +58,9 @@ For code or configs to be generated, specify the source data that needs to be us
 
 
 
-### Set Up Playbooks
+### Set Up Taskflows
 
-- Use the "playbooks" folder to feed your zaunic tasks.
+- Use the "taskflows" folder to manage your zaunic tasks.
 - Setup your YAML playbook in the folder. Below is a sample playbook:
 
 ```
@@ -137,8 +137,3 @@ To view all available commands, type:
 ```
 zn --help
 ```
-
-## Coming Soon...
-
-- Support for Secrets
-- Remote access
