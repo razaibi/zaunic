@@ -1,8 +1,0 @@
----
-nodes:
-  - name: "Test Node"
-    protocol: 'ssh'
-    hostname: 'XX.XX.XX.XX'
-    connection_mode: "credentials"
-    username: "XXXXXXX-XXXXXXXXX"
-    password: "XXXXXXX-XXXXXXXXX"
