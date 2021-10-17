@@ -8,6 +8,7 @@ from zcore.processor.service import ProcessorService
 from zcore.action.generator_service import GeneratorActionService
 from zcore.action.executor_service import ExecutorActionService
 from zcore.action.file_service import FileActionService
+from zcore.action.rest_api_service import RestApiActionService
 from progress.bar import ChargingBar
 
 class PlaybookProcessorService(ProcessorService):
@@ -69,10 +70,14 @@ class PlaybookProcessorService(ProcessorService):
            'generate' : GeneratorActionService.generate_content_remote, 
            'upload' : FileActionService.upload_file, 
            'download' : FileActionService.download_file, 
-           'call_api' : FileActionService.download_file, 
+           'call_rest_api' : RestApiActionService.call_endpoint, 
            'execute' : ExecutorActionService.execute_command
         }
-        action[params_dict['task']['action']](params_dict)
+        try:
+            action[params_dict['task']['action']](params_dict)
+        except KeyError as e:
+            print(e)
+            print('\nUndefined action. Check your task "action" value.')
 
     @staticmethod
     def perform_action(node, node_processor_service, playbook_name, playbook_data):
@@ -100,7 +105,8 @@ class PlaybookProcessorService(ProcessorService):
                         "taskflow_data": playbook_data,
                         "node_client": node_client,
                         "ftp_client": ftp_client,
-                        "node_processor_service": NodeProcessorService 
+                        "node_processor_service": NodeProcessorService,
+
                     }
                 )
                 
