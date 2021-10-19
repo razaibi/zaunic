@@ -1,6 +1,6 @@
 ---
 label: 'REST API Call Tests'
-nodes: test-nodes
+nodes: sample-nodes
 secrets:
   test-secret:
     keyname: "client_id"
@@ -8,20 +8,23 @@ secrets:
     source: "zaunic_local"
     
 tasks:
-  - name: "Call a REST API"
-    action: "call_rest_api"
-    request:
-      url: 'http://api.open-notify.org/iss-pass.json'
-      method: 'GET'
-      params:
-        lat: '45'
-        lon: '180'
-      return:
-        status_code: 200
-        type: json
+   - name: "Call a REST API"
+     action: "call_rest_api"
+     mode: local
+     request:
+       url: 'http://api.open-notify.org/iss-pass.json'
+       method: 'GET'
+       params:
+         lat: '45'
+         lon: '180'
+       return:
+         status_code: 200
+         type: json
+       output: '/sample-get.json'
 
   - name: "Make a POST request"
     action: "call_rest_api"
+    mode: local
     request:
       url: 'https://reqbin.com/echo/post/json'
       method: 'POST'
@@ -35,22 +38,25 @@ tasks:
       return:
         status_code: 200
         type: json
+      output: '/sample-post.json'
 
-  - name: "Make a PUT request"
-    action: "call_rest_api"
-    request:
-      url: 'https://reqbin.com/echo/put/json'
-      method: 'PUT'
-      headers:
-        Accept: application/json
-      body:
-        Id: 78912
-        Customer: "Jason Sweet"
-        Quantity: 1
-        Price: 18.00 
-      return:
-        status_code: 200
-        type: json
+   - name: "Make a PUT request"
+     action: "call_rest_api"
+     mode: local
+     request:
+       url: 'https://reqbin.com/echo/put/json'
+       method: 'PUT'
+       headers:
+         Accept: application/json
+       body:
+         Id: 78912
+         Customer: "Jason Sweet"
+         Quantity: 1
+         Price: 18.00 
+       return:
+         status_code: 200
+         type: json
+       output: '/sample-put.json'
 
 
     
