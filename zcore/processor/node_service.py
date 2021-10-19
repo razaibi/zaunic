@@ -23,11 +23,11 @@ class NodeProcessorService(ProcessorService):
         )
         return node_list_obj['nodes']
 
-    def get_nodes(self, playbook_data):
+    def get_nodes(self, taskflow_data):
         node_list = None
-        if 'nodes' in playbook_data:
+        if 'nodes' in taskflow_data:
             node_list = self.read_list(
-                playbook_data['nodes']
+                taskflow_data['nodes']
             )
 
         return node_list

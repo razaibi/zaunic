@@ -61,7 +61,7 @@ For code or configs to be generated, specify the source data that needs to be us
 ### Set Up Taskflows
 
 - Use the "taskflows" folder to manage your zaunic tasks.
-- Setup your YAML playbook in the folder. Below is a sample playbook:
+- Setup your YAML taskflow in the folder. Below is a sample taskflow:
 
 ```
 ---
@@ -97,17 +97,17 @@ data_level: "sample>0"
 
 ***output*** refers to the generated output file from the template and the injected data.
 
-### Setup Runners for Playbooks
+### Setup Runners for Taskflows
 
-- Use the "runner" folder to setup the list of playbooks you want to execute.
-- Add the name of the playbooks you want to execute.
-- Playbooks specified here are executed in linear order.
+- Use the "runner" folder to setup the list of taskflows you want to execute.
+- Add the name of the taskflows you want to execute.
+- Taskflows specified here are executed in linear order.
 
 Below is an example of the same:
 ```
 ---
-playbooks:
-  - "sample-playbook-2"
+taskflows:
+  - "sample-taskflow-8"
 ```
 
 
