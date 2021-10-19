@@ -19,7 +19,7 @@ ATTRIBUTES_TERM = 'columns'
 # Node Configs
 LOCAL_NODE_TAGS = ['localhost', '127.0.0.1', 'mycomputer']
 
-# Playbook Keys
+# Taskflow Keys
 
 DATA_KEY = 'data'
 SECRETS_KEY = 'secrets'
@@ -28,7 +28,7 @@ CATEGORY_KEY = 'category'
 TEMPLATE_KEY = 'template'
 OUTPUT_KEY = 'output'
 
-# Playbook Configs
+# Taskflow Configs
 
 TASKFLOWS_FOLDER="taskflows"
 # Used to format Folder<SEPARATOR>File

@@ -12,7 +12,7 @@ def run_all():
     #    "ddl",
     #    "db.yml"
     #)
-    #core.process_playbook("playbook-1")
+    #core.process_taskflow("taskflow-1")
     core.run()
     # Test Secret Management
     ## Add a secret called "client_id" to the dev environment.

@@ -1,10 +1,10 @@
-from zcore.processor.playbook_service import PlaybookProcessorService
+from zcore.processor.taskflow_service import TaskflowProcessorService
 from zcore.processor.node_service import NodeProcessorService
 
 
 def Factory(service_name):
     processor_services = {
-        "playbook" : PlaybookProcessorService,
+        "taskflow" : TaskflowProcessorService,
         "node" : NodeProcessorService
     }
 

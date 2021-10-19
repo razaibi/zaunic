@@ -105,17 +105,17 @@ class OrchestratorService():
 
   
 
-    def impute_secrets(self, playbook_data):
-        if CONFIGS.SECRETS_KEY in playbook_data:
-            secrets = playbook_data['secrets']
+    def impute_secrets(self, taskflow_data):
+        if CONFIGS.SECRETS_KEY in taskflow_data:
+            secrets = taskflow_data['secrets']
             new_secret_dict = {}
             for secret in secrets:
                 secrets[secret]['keyvalue'] = self._process_secret(secrets[secret])
                 new_secret_dict = { 
                     secrets[secret]['keyname'] : secrets[secret]['keyvalue']
                 }
-            playbook_data['secrets'] = new_secret_dict
-            return playbook_data
+            taskflow_data['secrets'] = new_secret_dict
+            return taskflow_data
 
     def _process_secret(self, secret:dict):
         source_switcher = {

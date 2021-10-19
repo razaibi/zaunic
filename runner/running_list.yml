@@ -1,3 +1,3 @@
 ---
-playbooks:
-  - "sample-taskflow-7"
+taskflows:
+  - "sample-taskflow-8"

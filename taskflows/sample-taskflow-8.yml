@@ -1,6 +1,6 @@
 ---
 label: 'REST API Call Tests'
-nodes: test-nodes
+nodes: sample-nodes
 secrets:
   test-secret:
     keyname: "client_id"
@@ -10,6 +10,7 @@ secrets:
 tasks:
   - name: "Call a REST API"
     action: "call_rest_api"
+    mode: local
     request:
       url: 'http://api.open-notify.org/iss-pass.json'
       method: 'GET'
@@ -19,9 +20,11 @@ tasks:
       return:
         status_code: 200
         type: json
+      output: '/sample-get.json'
 
   - name: "Make a POST request"
     action: "call_rest_api"
+    mode: local
     request:
       url: 'https://reqbin.com/echo/post/json'
       method: 'POST'
@@ -35,9 +38,11 @@ tasks:
       return:
         status_code: 200
         type: json
+      output: '/sample-post.json'
 
   - name: "Make a PUT request"
     action: "call_rest_api"
+    mode: local
     request:
       url: 'https://reqbin.com/echo/put/json'
       method: 'PUT'
@@ -51,6 +56,7 @@ tasks:
       return:
         status_code: 200
         type: json
+      output: '/sample-put.json'
 
 
     
