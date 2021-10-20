@@ -1,0 +1,8 @@
+---
+nodes: test-nodes
+tasks:
+  - name: "Show code generation demo."
+    action: "generate"
+    category: "demo"
+    template: "sample>hello_world"
+    output: "/>demo>Hello_World.txt"
