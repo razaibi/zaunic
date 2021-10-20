@@ -12,7 +12,7 @@ tasks:
     template: "print>secret"
     output: "/>something>secrets_demo.sh"
     
-  - name: "Run fil on Dev Server"
+  - name: "Run file on Dev Server"
     action: "execute"
     command: "curl https://example.org/ >> /something/example.txt"
 
