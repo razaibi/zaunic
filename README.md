@@ -35,7 +35,20 @@ data:
   user_name: "Your Name"
 ```
 - Now let us decide where to run this demo.
-  * Navigate to **sample-nodes.yml** in the **nodes** folder and enter credentials of the node to run the demo on. Save your changes.
+
+Add a node on which you would like to execute the taskflows on.
+
+```bash
+zn add-node --group=sample-nodes --name="NameofYourNode" --host="IP.Address.Of.Node"
+```
+You will be prompted to enter credentials for the node.
+
+If you wish to update the node, use the below command:
+
+```bash
+zn update-node --group=sample-nodes --name="NameofYourNode" --host="IP.Address.Of.Node"
+```
+  * Navigate to **sample-nodes.yml** in the **nodes** folder to confirm your newly added nodes. The credentials will not be openly readable.
 
 - Navigate to **running-list.yml** in the **runner** folder and ensure that **demo-taskflow** is part of the list.
 
