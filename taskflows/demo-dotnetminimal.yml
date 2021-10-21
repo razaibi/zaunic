@@ -1,0 +1,24 @@
+---
+nodes: sample-nodes
+tasks:
+  - name: "Generate Program.cs."
+    action: "generate"
+    data: "demo-dotnetminimal"
+    category: "demodotnetminimal"
+    template: "program"
+    output: "/>dotnetminimal>Program.cs"
+
+  - name: "Generate csproj file."
+    action: "generate"
+    category: "demodotnetminimal"
+    template: "cs_proj"
+    output: "/>dotnetminimal>MyApp.csproj"
+
+  - name: "Upload Minimal API Files."
+    action: "upload"
+    source: "./upload_bay/dotnetminimal/*.*"
+    destination: "/dotnetminimal/"
+
+  - name: "Run server"
+    action: "execute"
+    command: "cd /dotnetminimal;dotnet run --urls http://0.0.0.0:5001;"
