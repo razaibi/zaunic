@@ -1,0 +1,12 @@
+---
+data:
+  demoevent:
+    name: "PyCon"
+    location: "Sweden"
+  routes:
+    - url: "/"
+      return_data: "This is a Call to Dotnet Minimal API."
+    - url: "/ping"
+      return_data: "This is a ping test endpoint."
+    - url: "/health"
+      return_data: "This is a health check endpoint."
