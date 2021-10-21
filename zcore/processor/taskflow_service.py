@@ -93,6 +93,7 @@ class TaskflowProcessorService(ProcessorService):
         )
         if node_connection['state']=="ok":
             node_client = node_connection["client"]
+            scp_client = node_connection["scp_client"]
             ftp_client = node_client.open_sftp()
             bar = ChargingBar(
                 'Processing {} on {}'.format(taskflow_name, node["name"]), 
@@ -107,6 +108,7 @@ class TaskflowProcessorService(ProcessorService):
                         "task": task,
                         "taskflow_data": taskflow_data,
                         "node_client": node_client,
+                        "scp_client" : scp_client,
                         "ftp_client": ftp_client,
                         "node_processor_service": NodeProcessorService,
 
@@ -114,6 +116,7 @@ class TaskflowProcessorService(ProcessorService):
                 )
                 
             ftp_client.close()
+            scp_client.close()
             node_client.close()
             bar.finish()
         else:
