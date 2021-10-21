@@ -1,6 +1,8 @@
+from yaml.nodes import Node
 import typer
 from zcore import core
 from zcore.secret.manager import Factory as SecretFactory
+from zcore.node import Manager as NodeManager
 
 app = typer.Typer()
 
@@ -40,6 +42,77 @@ def get_secret(
     ):
     secrets_service = SecretFactory("zaunic")
     secrets_service.get_secret(env, name)
+
+
+@app.command()
+def add_node(
+        group: str = typer.Option(..., "--grp", "--g"),
+        name: str = typer.Option(..., "--name", "--n"),
+        host: str = typer.Option(..., "--host", "--h"),
+        username: str = typer.Option(
+            ..., 
+            "--user", 
+            "--u", 
+            prompt=True,
+            confirmation_prompt=False, 
+            hide_input=True
+        ),
+        password: str = typer.Option(
+            ..., 
+            "--pass", 
+            "--p", 
+            prompt=True,
+            confirmation_prompt=False, 
+            hide_input=True
+        )
+    ):
+    nm = NodeManager()
+    nm.add_node_with_credentials(
+        group,
+        name,
+        host,
+        username.encode(),
+        password.encode()
+    )
+
+@app.command()
+def update_node(
+        group: str = typer.Option(..., "--grp", "--g"),
+        name: str = typer.Option(..., "--name", "--n"),
+        host: str = typer.Option(..., "--host", "--h"),
+        username: str = typer.Option(
+            ..., 
+            "--user", 
+            "--u", 
+            prompt=True,
+            confirmation_prompt=False, 
+            hide_input=True
+        ),
+        password: str = typer.Option(
+            ..., 
+            "--pass", 
+            "--p", 
+            prompt=True,
+            confirmation_prompt=False, 
+            hide_input=True
+        )
+    ):
+    nm = NodeManager()
+    nm.update_node_by_name(
+        group,
+        name,
+        host,
+        username.encode(),
+        password.encode()
+    )
+
+@app.command()
+def generate_node_key():
+    """
+    Generates the key that encrypts connection credentials for nodes.
+    """
+    nm = NodeManager()
+    nm.generate_encryption_key()
 
 @app.command()
 def get_azure_secret(
