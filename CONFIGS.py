@@ -45,3 +45,5 @@ SECRETS_CONFIGS_FOLDER = "secret_configs"
 
 # Nodes Encryption Key File
 NODE_ENCYRPTION_KEY_FILE='encryption_key'
+
+SOURCE_WILDCARD = "*.*"
