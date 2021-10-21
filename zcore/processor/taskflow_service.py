@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 from zcore.common import FileManager
 import CONFIGS
+from zcore.node import Manager as NodeManager
 from zcore.processor.node_service import NodeProcessorService
 from zcore.secret.orchestrator_service import OrchestratorService
 from zcore.processor.service import ProcessorService
@@ -59,7 +60,9 @@ class TaskflowProcessorService(ProcessorService):
 
         node_processor_service = NodeProcessorService()
         node_list = node_processor_service.get_nodes(taskflow_data)
-
+        nm = NodeManager()
+        node_list = nm.get_creds_nodes(node_list)
+        
         #taskflow
         taskflow_data = self.impute_secrets(taskflow_data)
         result = [TaskflowProcessorService.perform_action(node, node_processor_service, taskflow_name, taskflow_data) for node in node_list]
