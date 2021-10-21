@@ -13,6 +13,15 @@ class FileManager():
             documents = yaml.load(file, Loader=yaml.FullLoader)
         return documents
 
+    def read_file(self, file_path:str)->str:
+        with open(file_path) as f:
+            contents = f.read()
+        return contents
+
+    def write_yaml(self, file_path:str, content:Dict)->str:
+        with open(file_path, 'w') as file:
+            documents = yaml.dump(content, file)
+
 
 class ApiClientManager():
     def __init__(self):
