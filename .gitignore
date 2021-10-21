@@ -7,3 +7,5 @@ nodes/test-nodes.yml
 runner/running_list.yml
 secretstore/*
 secretstore/dev.ini
+nodes/sample-nodes.yml
+nodes/encryption_key.bin
