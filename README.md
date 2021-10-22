@@ -308,8 +308,19 @@ The client parameters (referred above) **should be encrypted and stored** in the
 For a client parameter liked **client_id**, a Zaunic secret/envrionment variable should be saved in the following format:
 
 ```bash
-zn add-secret azure-<instance-of-service>-<environment>-<credential_type>
+zn add-secret azure_<instance-of-service>_<environment>_<credential_type>
 ```
+
+Example for Azure 
+```bash
+zn add-secret --env=dev --name=azure_kv-test_something_dev_client_id
+zn add-secret --env=dev --name=azure_kv-test_something_dev_client_secret
+zn add-secret --env=dev --name=azure_kv-test_something_dev_tenant_id
+```
+
+environment can be dev/stage/pre-prod/prod.
+
+Now, if you can access your credentials in your templates.
 
 ## Setup Runners for Taskflows
 
