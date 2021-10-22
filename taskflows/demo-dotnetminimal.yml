@@ -1,6 +1,11 @@
 ---
 nodes: sample-nodes
 tasks:
+
+  - name: "Run server"
+    action: "execute"
+    command: "sudo pkill dotnet"
+
   - name: "Generate Program.cs."
     action: "generate"
     data: "demo-dotnetminimal"
