@@ -1,0 +1,78 @@
+---
+nodes: sample-nodes
+secrets:
+  test-secret:
+    keyname: "sample_db_key"
+    env: "dev"
+    source: "zaunic_local"
+    instance: "kv-zaunic-test"
+
+tasks:
+  - name: "Generate DB Container."
+    action: "generate"
+    data: "demo-fastapi-data"
+    category: "demofastapi"
+    template: "db_runner"
+    output: "/>fastapi>db_runner.sh"
+
+  - name: "Run DB Container."
+    action: "execute"
+    command: "chmod +x /fastapi/db_runner.sh; /fastapi/db_runner.sh"
+
+  - name: "Install Packages."
+    action: "execute"
+    command: "pip3 install -r /fastapi/requirements.txt"
+
+  - name: "Generate DB Manager for the API."
+    action: "generate"
+    data: "demo-fastapi-data"
+    category: "demofastapi"
+    template: "db_manager"
+    output: "/>fastapi>app>api>db_manager.py"
+
+  - name: "Generate DB Mapper for the API."
+    action: "generate"
+    data: "demo-fastapi-data"
+    category: "demofastapi"
+    template: "db"
+    output: "/>fastapi>app>api>db.py"
+
+  - name: "Generate Models for the API."
+    action: "generate"
+    data: "demo-fastapi-data"
+    category: "demofastapi"
+    template: "models"
+    output: "/>fastapi>app>api>models.py"
+
+  - name: "Generate Routes for the API."
+    action: "generate"
+    data: "demo-fastapi-data"
+    category: "demofastapi"
+    template: "routes"
+    output: "/>fastapi>app>api>routes.py"
+
+  - name: "Generate Main file for the API."
+    action: "generate"
+    data: "demo-fastapi-data"
+    category: "demofastapi"
+    template: "main"
+    output: "/>fastapi>app>main.py"
+
+  - name: "Generate CONFIGS file for the API."
+    action: "generate"
+    data: "demo-fastapi-data"
+    category: "demofastapi"
+    template: "configs"
+    output: "/>fastapi>CONFIGS.py"
+
+  - name: "Generate Docker Compose file for the API."
+    action: "generate"
+    data: "demo-fastapi-data"
+    category: "demofastapi"
+    template: "docker-compose"
+    output: "/>fastapi>docker-compose.yml"
+
+  - name: "Run App."
+    action: "execute"
+    command: "cd /fastapi;chmod +x /fastapi/runner.sh; /fastapi/runner.sh;"
+
