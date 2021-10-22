@@ -16,7 +16,7 @@ tasks:
 
   - name: "Upload Minimal API Files."
     action: "upload"
-    source: "./upload_bay/dotnetminimal/*.*"
+    source: "./upload_bay/demo-dotnetminimal/*.*"
     destination: "/dotnetminimal/"
 
   - name: "Run server"
