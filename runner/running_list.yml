@@ -1,3 +1,6 @@
 ---
 taskflows:
-  - "sample-taskflow-8"
+#  - "demo-dotnetminimal"
+  - "demo-fastapi-basic"
+  - "demo-fastapi-extended"
+#  - "sample-taskflow-8"
