@@ -28,7 +28,14 @@ def run_all():
 def add_secret(
         env: str = typer.Option(..., "--env", "--e"),
         name: str = typer.Option(..., "--name", "--n"),
-        value: str = typer.Option(..., "--val", "--v"),
+        value: str = typer.Option(
+            ..., 
+            "--val", 
+            "--v", 
+            prompt=True,
+            confirmation_prompt=False, 
+            hide_input=True
+        ),
     ):
     secrets_service = SecretFactory("zaunic")
     secrets_service.set_secret(env, name, value)
