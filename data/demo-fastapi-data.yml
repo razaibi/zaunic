@@ -1,0 +1,23 @@
+---
+data:
+  orm_table_name: "things"
+  orm_table_name_cap: "Thing"
+  orm_table_name_singular: "thing"
+  orm_columns:
+    - name: "name"
+      datatype: "String(250)"
+    - name: "thing_count"
+      datatype: "Integer"
+
+  dto_columns_in:
+    - name: "name"
+      datatype: "str"
+    - name: "thing_count"
+      datatype: "int"
+
+  dto_columns_out:
+    - name: "name"
+      datatype: "Optional[str] = None"
+    - name: "thing_count"
+      datatype: "Optional[int]"
+
