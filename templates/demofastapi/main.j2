@@ -1,0 +1,25 @@
+from fastapi import FastAPI
+from app.api.routes import {{orm_table_name}}
+from app.api.db import metadata, database, engine
+import CONFIGS
+
+metadata.create_all(engine)
+
+app = FastAPI(
+    openapi_url=CONFIGS.OPEN_API_URL, 
+    docs_url=CONFIGS.DOCS_URL,
+    title=CONFIGS.API_DOC_TITLE,
+    description=CONFIGS.API_DOC_DESC,
+    version=CONFIGS.API_VERSION
+)
+
+@app.on_event("startup")
+async def startup():
+    await database.connect()
+
+@app.on_event("shutdown")
+async def shutdown():
+    await database.disconnect()
+
+
+app.include_router({{orm_table_name}}, prefix=CONFIGS.BASE_API_PREFIX, tags=CONFIGS.API_TAGS)

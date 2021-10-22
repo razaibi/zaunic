@@ -1,5 +1,6 @@
 import paramiko
 from paramiko.client import SSHClient
+from scp import SCPClient
 from typing import Tuple
 import os
 import errno
@@ -41,9 +42,11 @@ class NodeProcessorService(ProcessorService):
                 username=host_username,
                 password=host_password
             )
+            scp_client = SCPClient(ssh_client.get_transport())
             return {
                 "state" : "ok",
-                "client" : ssh_client
+                "client" : ssh_client,
+                "scp_client" : scp_client
             }
         except Exception as e:
             return { 

@@ -26,17 +26,15 @@ class AzureSecretsService(SecretsService):
         if None in (client_id, client_secret, tenant_id):
             return None
         secret = None
-        #if None not in (client_id, client_secret, tenant_id):
-        #    secret = self.get_secret_from_keyvault(
-        #        instance,
-        #        {
-        #            "client_id" : client_id,
-        #            "client_secret" : client_secret,
-        #            "tenant_id" : tenant_id
-        #        },
-        #        keyname
-        #    )
-        #return secret
+        if None not in (client_id, client_secret, tenant_id):
+            secret = self.get_secret_from_keyvault(
+                instance,
+                client_id,
+                client_secret,
+                tenant_id,
+                keyname
+            )
+        return secret
 
     def get_secret_from_keyvault(self, 
             instance:str, 
@@ -65,7 +63,6 @@ class AzureSecretsService(SecretsService):
             credential=client_credential,
             logging_enable=False
         )
-
         secret = secret_client.get_secret(keyname)
         return secret.value
 

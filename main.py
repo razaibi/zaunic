@@ -28,7 +28,14 @@ def run_all():
 def add_secret(
         env: str = typer.Option(..., "--env", "--e"),
         name: str = typer.Option(..., "--name", "--n"),
-        value: str = typer.Option(..., "--val", "--v"),
+        value: str = typer.Option(
+            ..., 
+            "--val", 
+            "--v", 
+            prompt=True,
+            confirmation_prompt=False, 
+            hide_input=True
+        ),
     ):
     secrets_service = SecretFactory("zaunic")
     secrets_service.set_secret(env, name, value)
@@ -120,13 +127,14 @@ def get_azure_secret(
         name: str = typer.Option(..., "--name", "--n"),
         vault: str = typer.Option(..., "--vlt", "--v"),
     ):
-    secrets_service = SecretFactory("zaunic")
+    secrets_service = SecretFactory("azure")
     secret_struct = {
         'instance': vault,
         'env': env,
         'keyname' : name
     }
-    secrets_service.get_azure_key_vault_secret(secret_struct)
+    val = secrets_service.get_secret(**secret_struct)
+    #Use Carefully.
 
 if __name__ == "__main__":
     app()

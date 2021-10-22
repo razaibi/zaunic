@@ -1,0 +1,23 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+using System;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+var app = builder.Build();
+
+app.MapGet("/demo", () => new DemoEvent("{{-demoevent['name']}}", "{{-demoevent['location']}}"));
+
+{% for route in routes %}
+app.MapGet("{{-route['url']}}", () => "{{-route['return_data']}}");
+{% endfor %}
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.Run();
+
+public record DemoEvent(string EventName, string Location);

@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  {{orm_table_name_singular}}_db:
+    image: postgres:12.1-alpine
+    volumes:
+      - postgres_data_{{orm_table_name_singular}}:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER={{orm_table_name_singular}}_service
+      - POSTGRES_PASSWORD={{secrets.sample_db_key}}
+      - POSTGRES_DB={{orm_table_name_singular}}_db

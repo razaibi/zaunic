@@ -1,0 +1,30 @@
+---
+nodes: sample-nodes
+tasks:
+
+  - name: "Create Project Directory."
+    action: "execute"
+    command: "sudo mkdir /fastapi"
+
+  - name: "Upload basic required files."
+    action: "upload"
+    source: "./upload_bay/demo-fastapi/*.*"
+    destination: "/fastapi/"
+
+  - name: "Upload Web API Dockerfile."
+    action: "upload"
+    source: "./upload_bay/demo-fastapi/Dockerfile"
+    destination: "/fastapi/Dockerfile"
+
+  - name: "Upload main runner script."
+    action: "upload"
+    source: "./upload_bay/demo-fastapi/runner.sh"
+    destination: "/fastapi/runner.sh"
+
+  - name: "Create required folders."
+    action: "execute"
+    command: > 
+      sudo mkdir /fastapi/app/;
+      sudo mkdir /fastapi/app/api;
+      sudo mkdir /fastapi/app/uploads;
+      touch /fastapi/app/api/__init__.py

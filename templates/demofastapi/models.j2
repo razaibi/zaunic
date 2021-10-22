@@ -1,0 +1,17 @@
+from typing import List, Optional, Union
+from uuid import UUID, uuid4
+from pydantic import BaseModel, Field
+from datetime import date, datetime, time, timedelta
+
+class {{orm_table_name_cap}}In(BaseModel):
+{%-for column_item in dto_columns_in %}
+    {{column_item['name']}}: {{column_item['datatype']}}
+{%-endfor %}
+
+class {{orm_table_name_cap}}Out({{-orm_table_name_cap}}In):
+    id: Union[str, UUID]
+
+class {{orm_table_name_cap}}Update({{-orm_table_name_cap}}In):
+{%-for column_item in dto_columns_out %}
+    {{column_item['name']}}: {{column_item['datatype']}}
+{%-endfor %}
