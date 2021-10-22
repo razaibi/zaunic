@@ -1,0 +1,51 @@
+from typing import List
+from fastapi import APIRouter, HTTPException, File, UploadFile
+from fastapi.responses import HTMLResponse
+import os
+import time
+from multiprocessing import Pool, cpu_count
+from app.api.models import {{orm_table_name_cap}}Out, {{-orm_table_name_cap}}In, {{-orm_table_name_cap}}Update
+from app.api import db_manager
+
+{{orm_table_name}} = APIRouter()
+
+@{{orm_table_name}}.post('/', response_model={{-orm_table_name_cap}}Out, status_code=201)
+async def create_{{orm_table_name_singular}}(payload: {{orm_table_name_cap}}In):
+    {{orm_table_name_singular}}_id = await db_manager.add_{{orm_table_name_singular}}(payload)
+    response = {
+        'id': {{orm_table_name_singular}}_id,
+        **payload.dict()
+    }
+    return response
+
+@{{orm_table_name}}.get('/', response_model=List[{{-orm_table_name_cap}}Out])
+async def get_{{orm_table_name}}(limit: int = 10, offset: int = 0):
+    return await db_manager.get_all_{{orm_table_name}}(limit, offset)
+
+@{{orm_table_name}}.get('/{id}/', response_model={{-orm_table_name_cap}}Out)
+async def get_{{orm_table_name_singular}}(id: str):
+    {{orm_table_name_singular}} = await db_manager.get_{{orm_table_name_singular}}(id)
+    if not {{orm_table_name_singular}}:
+        raise HTTPException(status_code=404, detail="{{-orm_table_name_cap}} not found")
+    return {{orm_table_name_singular}}
+
+@{{orm_table_name}}.put('/{id}/', response_model={{-orm_table_name_cap}}Out)
+async def update_{{orm_table_name_singular}}(id: str, payload: {{orm_table_name_cap}}Update):
+    {{orm_table_name_singular}} = await db_manager.get_{{orm_table_name_singular}}(id)
+    if not {{orm_table_name_singular}}:
+        raise HTTPException(status_code=404, detail="{{-orm_table_name_cap}} not found")
+    update_data = payload.dict(exclude_unset=True)
+    {{orm_table_name_singular}}_in_db = {{orm_table_name_cap}}In(**{{orm_table_name_singular}})
+    updated_{{orm_table_name_singular}} = {{orm_table_name_singular}}_in_db.copy(update=update_data)
+    return await db_manager.update_{{orm_table_name_singular}}(id, updated_{{orm_table_name_singular}})
+
+@{{orm_table_name}}.delete('/{id}/', response_model=None)
+async def delete_{{orm_table_name_singular}}(id: str):
+    {{orm_table_name_singular}} = await db_manager.get_{{orm_table_name_singular}}(id)
+    if not {{orm_table_name_singular}}:
+        raise HTTPException(status_code=404, detail="{{-orm_table_name_cap}} not found")
+    return await db_manager.delete_{{orm_table_name_singular}}(id)
+
+@{{orm_table_name}}.delete('/collection', response_model=None)
+async def drop_{{orm_table_name_singular}}():
+    return await db_manager.drop_{{orm_table_name_singular}}()

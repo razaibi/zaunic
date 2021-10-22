@@ -1,0 +1,8 @@
+API_DOC_TITLE='{{orm_table_name_cap}}s API'
+API_DOC_DESC='{{orm_table_name_cap}}s API'
+OPEN_API_URL='/api/v1/{{orm_table_name}}/openapi.json'
+DOCS_URL='/api/v1/{{orm_table_name}}/docs'
+API_VERSION='0.0.1'
+BASE_API_PREFIX='/api/v1/{{orm_table_name}}'
+API_TAGS = ['{{orm_table_name}}']
+DATABASE_URI = 'postgresql://{{orm_table_name_singular}}_service:{{secrets.sample_db_key}}@0.0.0.0/{{orm_table_name_singular}}_db'

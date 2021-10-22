@@ -1,0 +1,2 @@
+docker rm {{orm_table_name_singular}}_postgres
+docker run --name {{orm_table_name_singular}}_postgres -p 5432:5432 -e POSTGRES_PASSWORD={{secrets.sample_db_key}} -e POSTGRES_USER={{orm_table_name_singular}}_service -e POSTGRES_DB={{orm_table_name_singular}}_db -d postgres

@@ -1,0 +1,31 @@
+from app.api.models import {{orm_table_name_cap}}In, {{orm_table_name_cap}}Out, {{orm_table_name_cap}}Update
+from app.api.db import {{orm_table_name}}, database, engine
+from uuid import uuid4
+
+async def add_{{orm_table_name_singular}}(payload: {{orm_table_name_cap}}In):
+    payload_dict = payload.dict()
+    payload_dict['id'] = str(uuid4())
+    query = {{-orm_table_name}}.insert().values(**payload_dict)
+    await database.execute(query=query)
+    return payload_dict['id']
+
+async def get_all_{{-orm_table_name}}(limit: int, offset: int):
+    query = {{-orm_table_name}}.select().limit(limit).offset(offset)
+    return await database.fetch_all(query=query)
+
+async def get_{{orm_table_name_singular}}(id):
+    query = {{-orm_table_name}}.select({{-orm_table_name}}.c.id==id)
+    return await database.fetch_one(query=query)
+
+async def delete_{{orm_table_name_singular}}(id: int):
+    query = {{-orm_table_name}}.delete().where({{-orm_table_name}}.c.id==id)
+    return await database.execute(query=query)
+
+async def update_{{orm_table_name_singular}}(id: int, payload: {{orm_table_name_cap}}In):
+    query = (
+        {{-orm_table_name}}
+        .update()
+        .where({{-orm_table_name}}.c.id == id)
+        .values(**payload.dict())
+    )
+    return await database.execute(query=query)
