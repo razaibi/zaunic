@@ -1,6 +1,7 @@
 ---
 taskflows:
+  - demo-taskflow.yml
 #  - "demo-dotnetminimal"
-  - "demo-fastapi-basic"
-  - "demo-fastapi-extended"
+#  - "demo-fastapi-basic"
+#  - "demo-fastapi-extended"
 #  - "sample-taskflow-8"
